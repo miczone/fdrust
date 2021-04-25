@@ -13,6 +13,7 @@ repository = "https://github.com/miczone/fdrust"
 publish = true
 
 [lib]
+name = "fdutil"
 doctest = false
 test = false
 crate-type = ["cdylib"]

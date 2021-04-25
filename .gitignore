@@ -1,0 +1,13 @@
+_output/
+.idea
+.vscode
+vendor
+.travis.yml
+go.sum
+*.fasthttp.br
+fdgl_api_server
+logs
+target
+Cargo.lock
+src/genc
+target

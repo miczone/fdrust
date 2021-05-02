@@ -1,6 +1,10 @@
 # Fado rust library
 Fado global - Rust utilities
 
+# Testing
+cargo build
+cargo run
+
 # Installation
 Add these lines in Cargo.toml
 

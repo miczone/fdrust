@@ -2,7 +2,9 @@
 Fado global - Rust utilities
 
 # Testing
+
 cargo build
+
 cargo run
 
 # Installation

@@ -1,0 +1,16 @@
+[package]
+name = "fdutil_example"
+version = "1.0.0"
+edition = "2018"
+description = "Fdgl utils"
+authors = ["Dev Team <dev@miczone.asia>", "Paul Pham <paul@miczone.asia>"]
+documentation = "https://github.com/miczone/fdrust/wiki"
+license-file = "LICENSE.txt"
+keywords = ["api", "fado", "fdgl"]
+include = ["src/*", "src/**/*", "Cargo.toml"]
+homepage = "https://github.com/miczone/fdrust/"
+repository = "https://github.com/miczone/fdrust"
+publish = true
+
+[dependencies]
+fdutil = { path = "../lib" }

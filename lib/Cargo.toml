@@ -17,7 +17,8 @@ build = "build.rs"
 name = "fdutil"
 doctest = false
 test = false
-crate-type = ["lib", "staticlib", "cdylib"]
+#crate-type = ["lib", "staticlib", "cdylib"]
+#crate-type = ["lib"]
 
 [features]
 with-bytes = ["bytes"]

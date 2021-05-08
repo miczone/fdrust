@@ -17,8 +17,8 @@ build = "build.rs"
 name = "fdutil"
 doctest = false
 test = false
-#crate-type = ["lib", "staticlib", "cdylib"]
-#crate-type = ["lib"]
+proc-macro = true
+crate-type = ["lib"]
 
 [features]
 with-bytes = ["bytes"]
@@ -40,6 +40,9 @@ frank_jwt = "~3"
 js-sys = "~0.3"
 oauth1 = "~1"
 oauth2 = "~4"
+proc-macro2 = "1.0.26"
+quote = "1.0.9"
+syn = { version = "1.0.72", default-features = false }
 
 [build-dependencies]
 bindgen = "~0.58"

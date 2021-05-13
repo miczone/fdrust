@@ -1,2 +1,70 @@
+[package]
+name = "fdutil"
+version = "1.0.0"
+edition = "2018"
+description = "Fdgl utils"
+authors = ["Dev Team <dev@miczone.asia>", "Paul Pham <paul@miczone.asia>"]
+documentation = "https://github.com/miczone/fdrust/wiki"
+license-file = "LICENSE.txt"
+keywords = ["api", "fado", "fdgl"]
+homepage = "https://github.com/miczone/fdrust/"
+repository = "https://github.com/miczone/fdrust"
+publish = true
+build = "build.rs"
+
+[lib]
+name = "fdutil"
+doctest = false
+test = false
+crate-type = ["lib"]
+
+[features]
+with-bytes = ["bytes"]
+with-serde = ["serde", "serde_derive"]
+default = []
+
+[dependencies]
+bytes = { version = "~1.0", optional = true }
+serde        = { version = "~1.0", features = ["derive"], optional = true }
+serde_derive = { version = "~1.0", optional = true }
+wasm-bindgen = "~0.2"
+time = "~0.2"
+uuid = "~0.8"
+futures         = "~0.3"
+env_logger      = "~0.8"
+rand            = "~0.8"
+json            = "~0.12"
+frank_jwt = "~3"
+js-sys = "~0.3"
+oauth1 = "~1"
+oauth2 = "~4"
+
+[build-dependencies]
+bindgen = "~0.58"
+
+[package.metadata.docs.rs]
+all-features = true
+
+[target.'cfg(not(windows))'.dependencies]
+libc = "~0.2"
+
+[target.'cfg(all(any(target_arch = "x86_64", target_arch = "aarch64"), target_os = "hermit"))'.dependencies]
+hermit-abi = "~0.1"
+
 [workspace]
-members = ["lib", "examples"]
+resolver = "1"
+members = [
+    "cmd/examples"
+]
+default-members = ["cmd/examples"]
+
+[profile.dev]
+opt-level = 0
+debug = 1
+codegen-units = 4
+lto = false
+incremental = true
+panic = 'unwind'
+debug-assertions = true
+overflow-checks = false
+rpath = false

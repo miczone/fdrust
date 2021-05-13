@@ -1,6 +1,9 @@
 use std::borrow::Cow;
 use std::iter::once;
 
+pub fn string_to_str(s: String) -> &'static str {
+    Box::leak(s.into_boxed_str())
+}
 
 pub fn remove_whitespace<'a>(input: &'a str) -> Cow<'a, str> {
     if input.contains(' ') {

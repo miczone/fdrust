@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+use fdutil::algorithm::intervaltree::IntervalTree;
 
 pub fn _test() {
     let mut x: u32 = 1;
@@ -128,4 +129,39 @@ pub fn _out3() {
     owner1.add_one();
     owner1.print();
     println!("{:?}", owner1);
+}
+
+fn _verify_intervaltree(tree: &IntervalTree<u32, u32>, i: u32, expected: &[u32]) {
+    let mut v1: Vec<_> = tree.query_point(i).map(|x| x.value).collect();
+    v1.sort();
+    let mut v2: Vec<_> = tree.query(i..(i+1)).map(|x| x.value).collect();
+    v2.sort();
+    println!("{:?}", v1);
+    println!("{:?}", v2);
+    println!("{:?}", expected);
+}
+
+pub fn _test_intervaltree() {
+    let tree: IntervalTree<u32, u32> = [
+        (0..3, 1),
+        (1..4, 2),
+        (2..5, 3),
+        (3..6, 4),
+        (4..7, 5),
+        (5..8, 6),
+        (4..5, 7),
+        (2..7, 8),
+        (3..6, 9),
+    ].iter().cloned().collect();
+
+    _verify_intervaltree(&tree, 0, &[1]);
+    _verify_intervaltree(&tree, 1, &[1, 2]);
+    _verify_intervaltree(&tree, 2, &[1, 2, 3, 8]);
+    _verify_intervaltree(&tree, 3, &[2, 3, 4, 8]);
+    _verify_intervaltree(&tree, 4, &[3, 4, 5, 7, 8]);
+    _verify_intervaltree(&tree, 5, &[4, 5, 6, 8]);
+    _verify_intervaltree(&tree, 6, &[5, 6, 8]);
+    _verify_intervaltree(&tree, 7, &[6]);
+    _verify_intervaltree(&tree, 8, &[]);
+    _verify_intervaltree(&tree, 9, &[]);
 }

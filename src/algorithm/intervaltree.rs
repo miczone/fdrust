@@ -113,17 +113,17 @@ impl<K: Ord + Clone, V> IntervalTree<K, V> {
 }
 
 impl<K: Ord, V> IntervalTree<K, V> {
-    fn todo(&self) -> TodoVec {
-        let mut todo = SmallVec::new();
+    fn items(&self) -> ItemVec {
+        let mut items = SmallVec::new();
         if !self.data.is_empty() {
-            todo.push((0, self.data.len()));
+            items.push((0, self.data.len()));
         }
-        todo
+        items
     }
 
     pub fn query(&self, range: Range<K>) -> QueryIter<K, V> {
         QueryIter {
-            todo: self.todo(),
+            items: self.items(),
             tree: self,
             query: Query::Range(range),
         }
@@ -131,7 +131,7 @@ impl<K: Ord, V> IntervalTree<K, V> {
 
     pub fn query_point(&self, point: K) -> QueryIter<K, V> {
         QueryIter {
-            todo: self.todo(),
+            items: self.items(),
             tree: self,
             query: Query::Point(point),
         }
@@ -175,11 +175,11 @@ impl<K: Ord> Query<K> {
     }
 }
 
-type TodoVec = SmallVec<[(usize, usize); 16]>;
+type ItemVec = SmallVec<[(usize, usize); 16]>;
 
 pub struct QueryIter<'a, K: 'a, V: 'a> {
     tree: &'a IntervalTree<K, V>,
-    todo: TodoVec,
+    items: ItemVec,
     query: Query<K>,
 }
 
@@ -187,7 +187,7 @@ impl<'a, K: Ord + Clone, V> Clone for QueryIter<'a, K, V> {
     fn clone(&self) -> Self {
         QueryIter {
             tree: self.tree,
-            todo: self.todo.clone(),
+            items: self.items.clone(),
             query: self.query.clone(),
         }
     }
@@ -204,29 +204,26 @@ impl<'a, K: Ord, V> Iterator for QueryIter<'a, K, V> {
     type Item = &'a Element<K, V>;
 
     fn next(&mut self) -> Option<&'a Element<K, V>> {
-        while let Some((s, l)) = self.todo.pop() {
+        while let Some((s, l)) = self.items.pop() {
             let i = s + l/2;
 
             let node = &self.tree.data[i];
             if self.query.point() < &node.max {
-                // push into left
                 {
                     let leftsz = i - s;
                     if leftsz > 0 {
-                        self.todo.push((s, leftsz));
+                        self.items.push((s, leftsz));
                     }
                 }
 
                 if self.query.go_right(&node.element.range.start) {
-                    // push into right
                     {
                         let rightsz = l + s - i - 1;
                         if rightsz > 0 {
-                            self.todo.push((i + 1, rightsz));
+                            self.items.push((i + 1, rightsz));
                         }
                     }
 
-                    // finally, search this
                     if self.query.intersect(&node.element.range) {
                         return Some(&node.element);
                     }

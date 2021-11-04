@@ -9,6 +9,5 @@ extern crate std;
 extern crate alloc;
 
 pub mod array;
-pub mod wasm;
 pub mod helper;
 pub mod algorithm;
